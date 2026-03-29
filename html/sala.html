@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CineMinimum – Sala</title>
+  <link rel="stylesheet" href="../css/filmovi.css"/>
+  <link rel="stylesheet" href="../css/sala.css"/>
+</head>
+<body>
+
+  <nav>
+    <a href="filmovi.html" class="nav-logo">CineMinimum</a>
+    <ul>
+      <li><a href="filmovi.html" onclick="sessionStorage.setItem('cinePage','filmovi')">Filmovi</a></li>
+      <li><a href="filmovi.html" onclick="sessionStorage.setItem('cinePage','raspored')">Raspored</a></li>
+      <li><a href="sala.html" class="active">Sala</a></li>
+    </ul>
+  </nav>
+
+  <div class="sala-page">
+
+    <!-- ════════════════════════
+         MAIN – seat map
+    ════════════════════════ -->
+    <div class="sala-main">
+
+      <a href="filmovi.html" class="back-btn" onclick="sessionStorage.setItem('cinePage','raspored')">
+        Nazad na raspored
+      </a>
+
+      <div class="sala-header">
+        <div class="sala-film-title" id="sala-film-name">Thunder Road</div>
+        <div class="sala-meta-row">
+          <div class="sala-meta-pill">🕐 <strong id="sala-vrijeme">18:30</strong></div>
+          <div class="sala-meta-pill">🎬 <strong id="sala-broj">Sala 1</strong></div>
+          <div class="sala-meta-pill">📅 Petak</div>
+        </div>
+      </div>
+
+      <div class="screen-wrap">
+        <div class="screen-bar"></div>
+        <div class="screen-label">Platno</div>
+      </div>
+
+      <div class="col-numbers" id="col-numbers"></div>
+      <div class="seat-grid"   id="seat-grid"></div>
+
+    </div>
+
+    <!-- ════════════════════════
+         SIDEBAR
+    ════════════════════════ -->
+    <aside class="sala-sidebar">
+
+      <!-- Film info -->
+      <div class="sidebar-section">
+        <div class="sidebar-title">Informacije</div>
+        <div class="sidebar-film-name" id="sb-film-name">Thunder Road</div>
+        <div class="sidebar-film-meta">
+          <span>🕐 <strong id="sb-vrijeme">18:30</strong></span>
+          <span>🎬 <strong id="sb-sala">Sala 1</strong></span>
+          <span>🎟 Kliknite na sjedište da ga odaberete</span>
+        </div>
+      </div>
+
+      <!-- Legenda -->
+      <div class="sidebar-section">
+        <div class="sidebar-title">Legenda</div>
+        <div class="legend-list">
+          <div class="legend-row">
+            <div class="legend-left">
+              <div class="legend-seat free"></div>
+              <span class="legend-label">Standardno</span>
+            </div>
+            <span class="legend-price">8 KM</span>
+          </div>
+          <div class="legend-row">
+            <div class="legend-left">
+              <div class="legend-seat vip"></div>
+              <span class="legend-label">VIP (red C–D)</span>
+            </div>
+            <span class="legend-price">14 KM</span>
+          </div>
+          <div class="legend-row">
+            <div class="legend-left">
+              <div class="legend-seat selected"></div>
+              <span class="legend-label">Odabrano</span>
+            </div>
+            <span class="legend-price">—</span>
+          </div>
+          <div class="legend-row">
+            <div class="legend-left">
+              <div class="legend-seat reserved"></div>
+              <span class="legend-label">Rezervisano</span>
+            </div>
+            <span class="legend-price">—</span>
+          </div>
+          <div class="legend-row">
+            <div class="legend-left">
+              <div class="legend-seat taken"></div>
+              <span class="legend-label">Zauzeto</span>
+            </div>
+            <span class="legend-price">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Košarica -->
+      <div class="sidebar-section" style="flex:1; overflow-y:auto;">
+        <div class="sidebar-title">Vaša sjedišta</div>
+        <div id="cart-empty" class="cart-empty">Nema odabranih sjedišta</div>
+        <div class="cart-items" id="cart-items"></div>
+        <div class="cart-total-row" id="cart-total-row" style="display:none;">
+          <span class="cart-total-label">Ukupno</span>
+          <span class="cart-total-amount" id="cart-total">0 KM</span>
+        </div>
+      </div>
+
+      <button class="btn-confirm" id="btn-confirm" disabled onclick="confirmPurchase()">
+        Potvrdi rezervaciju
+      </button>
+
+    </aside>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ── URL params ──
+    const params   = new URLSearchParams(window.location.search);
+    const filmName = params.get('film')    || 'Thunder Road';
+    const filmTime = params.get('vrijeme') || '18:30';
+    const filmSala = params.get('sala')    || 'Sala 1';
+
+    ['sala-film-name','sb-film-name'].forEach(id => document.getElementById(id).textContent = filmName);
+    ['sala-vrijeme','sb-vrijeme'].forEach(id => document.getElementById(id).textContent = filmTime);
+    ['sala-broj','sb-sala'].forEach(id => document.getElementById(id).textContent = filmSala);
+    document.title = `CineMinimum – ${filmSala}`;
+
+    // ── Seat config ──
+    const ROWS = ['A','B','C','D','E','F','G','H'];
+    const COLS = 10;
+    const VIP_ROWS    = ['C','D'];
+    const PRICE_STD   = 8;
+    const PRICE_VIP   = 14;
+
+    const TAKEN_SEATS = [
+      'B3','B4','B5','C2','C3','C8','C9',
+      'D4','D5','D6','E3','E4','E7','E8',
+      'F5','F6','G4','G5','G6','G7'
+    ];
+    const RESERVED_SEATS = [
+      'A5','A6','B7','C5','D2','D9','E6','F3','F8','G2'
+    ];
+
+    // ── Cart state ──
+    const cart = new Map(); // seatId → { price, type }
+
+    function getSeatStatus(row, col) {
+      const id = `${row}${col}`;
+      if (TAKEN_SEATS.includes(id))    return 'taken';
+      if (RESERVED_SEATS.includes(id)) return 'reserved';
+      return 'free';
+    }
+
+    function isVip(row) { return VIP_ROWS.includes(row); }
+    function seatPrice(row) { return isVip(row) ? PRICE_VIP : PRICE_STD; }
+
+    // ── Build column numbers ──
+    const colNumsEl = document.getElementById('col-numbers');
+    for (let c = 1; c <= COLS; c++) {
+      if (c === 6) {
+        const gap = document.createElement('div');
+        gap.className = 'col-num-gap';
+        colNumsEl.appendChild(gap);
+      }
+      const n = document.createElement('div');
+      n.className = 'col-num';
+      n.textContent = c;
+      colNumsEl.appendChild(n);
+    }
+
+    // ── Build seat grid ──
+    const grid = document.getElementById('seat-grid');
+
+    ROWS.forEach(row => {
+      const rowEl = document.createElement('div');
+      rowEl.className = 'seat-row';
+
+      const label = document.createElement('div');
+      label.className = 'row-label';
+      label.textContent = row;
+      rowEl.appendChild(label);
+
+      for (let col = 1; col <= COLS; col++) {
+        if (col === 6) {
+          const gap = document.createElement('div');
+          gap.className = 'seat-gap';
+          rowEl.appendChild(gap);
+        }
+
+        const status = getSeatStatus(row, col);
+        const vip    = isVip(row);
+        const id     = `${row}${col}`;
+        const price  = seatPrice(row);
+
+        const seat = document.createElement('button');
+        seat.id        = `seat-${id}`;
+        seat.className = `seat ${status}${vip ? ' vip' : ''}`;
+        seat.title     = status === 'free'
+          ? `${id} – ${vip ? 'VIP' : 'Standard'} – ${price} KM`
+          : `${id} – ${status === 'taken' ? 'Zauzeto' : 'Rezervisano'}`;
+        seat.setAttribute('aria-label', seat.title);
+
+        if (status === 'free') {
+          seat.addEventListener('click', () => toggleSeat(seat, id, row, price, vip));
+        }
+
+        rowEl.appendChild(seat);
+      }
+
+      grid.appendChild(rowEl);
+    });
+
+    // ── Toggle seat selection ──
+    function toggleSeat(seat, id, row, price, vip) {
+      if (cart.has(id)) {
+        // deselect
+        cart.delete(id);
+        seat.classList.remove('selected');
+        seat.classList.add('free');
+      } else {
+        // select
+        cart.set(id, { price, type: vip ? 'VIP' : 'Standard' });
+        seat.classList.remove('free');
+        seat.classList.add('selected');
+      }
+      renderCart();
+    }
+
+    // ── Render cart sidebar ──
+    function renderCart() {
+      const cartItemsEl   = document.getElementById('cart-items');
+      const cartEmptyEl   = document.getElementById('cart-empty');
+      const cartTotalRow  = document.getElementById('cart-total-row');
+      const cartTotalEl   = document.getElementById('cart-total');
+      const btnConfirm    = document.getElementById('btn-confirm');
+
+      cartItemsEl.innerHTML = '';
+
+      if (cart.size === 0) {
+        cartEmptyEl.style.display  = 'block';
+        cartTotalRow.style.display = 'none';
+        btnConfirm.disabled        = true;
+        return;
+      }
+
+      cartEmptyEl.style.display  = 'none';
+      cartTotalRow.style.display = 'flex';
+      btnConfirm.disabled        = false;
+
+      let total = 0;
+      cart.forEach(({ price, type }, id) => {
+        total += price;
+        const item = document.createElement('div');
+        item.className = 'cart-item';
+        item.innerHTML = `
+          <div class="cart-seat-info">
+            <div class="cart-seat-id">Sjedište ${id}</div>
+            <div class="cart-seat-type">${type}</div>
+          </div>
+          <div class="cart-seat-price">${price} KM</div>
+          <button class="cart-remove" title="Ukloni" onclick="removeSeat('${id}')">✕</button>
+        `;
+        cartItemsEl.appendChild(item);
+      });
+
+      cartTotalEl.textContent = `${total} KM`;
+    }
+
+    function removeSeat(id) {
+      const seat = document.getElementById(`seat-${id}`);
+      if (seat) {
+        seat.classList.remove('selected');
+        seat.classList.add('free');
+      }
+      cart.delete(id);
+      renderCart();
+    }
+
+    // ── Confirm purchase ──
+    function confirmPurchase() {
+      if (cart.size === 0) return;
+
+      const seats = [...cart.keys()].join(', ');
+      const total = [...cart.values()].reduce((s, { price }) => s + price, 0);
+
+      // Mark selected seats as reserved
+      cart.forEach((_, id) => {
+        const seat = document.getElementById(`seat-${id}`);
+        if (seat) {
+          seat.classList.remove('selected', 'free');
+          seat.classList.add('reserved');
+          seat.removeEventListener('click', () => {});
+          seat.onclick = null;
+          seat.disabled = true;
+          seat.title = `${id} – Rezervisano`;
+        }
+      });
+
+      cart.clear();
+      renderCart();
+
+      showToast(`✓ Rezervacija potvrđena! Sjedišta: <strong>${seats}</strong> • Ukupno: <strong>${total} KM</strong>`);
+    }
+
+    function showToast(html) {
+      const toast = document.getElementById('toast');
+      toast.innerHTML = html;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 4500);
+    }
+
+    renderCart();
+  </script>
+
+</body>
+</html>

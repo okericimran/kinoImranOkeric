@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CineMinimum</title>
+  <link rel="stylesheet" href="../css/filmovi.css"/>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="nav-logo" onclick="showPage('pocetna'); return false;">CineMinimum</a>
+    <ul>
+      <li><a href="#" onclick="showPage('filmovi'); return false;" id="nav-filmovi">Filmovi</a></li>
+      <li><a href="#" onclick="showPage('raspored'); return false;" id="nav-raspored">Raspored</a></li>
+      <li><a href="sala.html" id="nav-sala">Sala</a></li>
+    </ul>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       FILM MODAL
+  ═══════════════════════════════════════ -->
+  <div class="film-modal-overlay" id="film-modal" onclick="closeModal(event)">
+    <div class="film-modal">
+      <button class="modal-close" onclick="closeModal(null, true)">✕</button>
+      <div class="modal-inner">
+        <img class="modal-poster" id="modal-poster" src="" alt=""/>
+        <div class="modal-body">
+          <span class="modal-badge" id="modal-badge"></span>
+          <div class="modal-title" id="modal-title"></div>
+          <div class="modal-meta">
+            <div class="modal-meta-item">🎬 <strong id="modal-genre"></strong></div>
+            <div class="modal-meta-item">⏱ <strong id="modal-duration"></strong></div>
+            <div class="modal-meta-item">🌍 <strong id="modal-year"></strong></div>
+            <div class="modal-meta-item">⭐ <strong id="modal-rating"></strong></div>
+          </div>
+          <div class="modal-desc" id="modal-desc"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       POČETNA
+  ═══════════════════════════════════════ -->
+  <div id="page-pocetna" class="page active">
+
+    <div class="hero">
+      <div class="hero-left">
+        <div class="hero-eyebrow">Dobrodošli u</div>
+        <div class="hero-title">Cine<span>Minimum</span></div>
+        <p class="hero-subtitle">
+          Vaše omiljeno kino u srcu grada.<br>
+          CineMinimum je moderno kino smješteno u srcu grada, koje nudi bogat izbor najnovijih filmskih hitova iz različitih žanrova. Naš cilj je pružiti vrhunski doživljaj gledanja uz udobna sjedišta, kvalitetan zvuk i sliku, te ugodnu atmosferu za sve posjetioce.
+        <a href="#" class="btn-repertoar" onclick="showPage('raspored'); return false;">Repertoar</a>
+      </div>
+    </div>
+
+    <div class="featured">
+      <div class="section-label">Istaknuti filmovi</div>
+      <div class="featured-grid" id="featured-grid"></div>
+    </div>
+
+  </div>
+
+  <!-- LEGEND BAR -->
+  <div id="legend-filmovi" style="display:none;">
+    <div class="legend-bar">
+      <div class="legend-item">
+        <div class="legend-swatch" style="background:var(--gold);"></div>
+        Trenutno u kinima
+      </div>
+      <div class="legend-item">
+        <div class="legend-swatch" style="background:var(--blue);"></div>
+        Uskoro u kinima
+      </div>
+      <div class="legend-item">
+        <div class="legend-swatch" style="background:#555;"></div>
+        Više nije u ponudi
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       FILMOVI
+  ═══════════════════════════════════════ -->
+  <div id="page-filmovi" class="page">
+    <h1 class="page-heading">Filmovi</h1>
+
+    <div id="akcija" class="genre-section">
+      <h2 class="genre-title">💥 Akcija</h2>
+      <div class="films-grid">
+
+        <div class="film-card now" onclick="openModal(this)" data-title="Thunder Road" data-duration="2h 18min" data-genre="Akcija" data-year="2024" data-rating="7.8 / 10" data-status="now" data-badge="U kinu" data-desc="Veteran policijske uprave Mike Arnau gubi posao, brak se raspada, a majka umire — sve u isto vrijeme. Njegova jedina nada je kćerka Crystal, ali socijalna služba prijeti oduzimanjem starateljstva. Ovo je sirova, nesentimentalna priča o čovjeku koji pokušava ostati na površini dok ga sve vuče prema dnu.">
+          <span class="card-badge">U kinu</span>
+          <img class="poster" src="https://placehold.co/200x260/1a1a2e/e8b24a?text=THUNDER+ROAD" alt="Thunder Road"/>
+          <div class="card-info">
+            <div class="card-title">Thunder Road</div>
+            <div class="card-duration">⏱ 2h 18min</div>
+          </div>
+        </div>
+
+        <div class="film-card now" onclick="openModal(this)" data-title="Iron Fury" data-duration="2h 05min" data-genre="Akcija" data-year="2024" data-rating="7.2 / 10" data-status="now" data-badge="U kinu" data-desc="Elitni vojni odred biva zarobljen iza neprijateljskih linija u izmišljenoj istočnoeuropskoj državi. Bez podrške iz baze, preostali vojnici moraju improvizovati i naći put kući kroz neprijateljsku teritoriju. Brutalna ratna drama koja ne preza od realizma.">
+          <span class="card-badge">U kinu</span>
+          <img class="poster" src="https://placehold.co/200x260/16213e/e8b24a?text=IRON+FURY" alt="Iron Fury"/>
+          <div class="card-info">
+            <div class="card-title">Iron Fury</div>
+            <div class="card-duration">⏱ 2h 05min</div>
+          </div>
+        </div>
+
+        <div class="film-card soon" onclick="openModal(this)" data-title="Steel Horizon" data-duration="2h 32min" data-genre="Akcija / Sci-Fi" data-year="2025" data-rating="Uskoro" data-status="soon" data-badge="Uskoro" data-desc="U bliskoj budućnosti, privatne korporacije preuzimaju kontrolu nad oceanima. Bivši ronilac specijalne jedinice otkriva podmornički kompleks koji skriva tajnu koja može promijeniti geopolitički poredak. Spektakularna akcijska avantura snimana na pravim lokacijama.">
+          <span class="card-badge">Uskoro</span>
+          <img class="poster" src="https://placehold.co/200x260/0f3460/b8dde8?text=STEEL+HORIZON" alt="Steel Horizon"/>
+          <div class="card-info">
+            <div class="card-title">Steel Horizon</div>
+            <div class="card-duration">⏱ 2h 32min</div>
+          </div>
+        </div>
+
+        <div class="film-card soon" onclick="openModal(this)" data-title="Last Signal" data-duration="1h 58min" data-genre="Akcija / Triler" data-year="2025" data-rating="Uskoro" data-status="soon" data-badge="Uskoro" data-desc="Kada satelitska mreža počne slati šifrirane poruke nepoznatog porijekla, CIA šalje svog najboljeg agenta da otkrije izvor. Triler koji se odvija u realnom vremenu, sa nepredvidivim preokretima i intenzivnom atmosferom.">
+          <span class="card-badge">Uskoro</span>
+          <img class="poster" src="https://placehold.co/200x260/1a3a50/c8e8f0?text=LAST+SIGNAL" alt="Last Signal"/>
+          <div class="card-info">
+            <div class="card-title">Last Signal</div>
+            <div class="card-duration">⏱ 1h 58min</div>
+          </div>
+        </div>
+
+        <div class="film-card ended" onclick="openModal(this)" data-title="Ghost Mark" data-duration="2h 10min" data-genre="Akcija / Misterija" data-year="2023" data-rating="6.9 / 10" data-status="ended" data-badge="Završeno" data-desc="Privatni detektiv dobija zadatak da pronađe ženu koja je nestala bez traga. Svaki trag vodi ka mračnoj organizaciji koja operira iz sjene. Neo-noir akcija s jakim vizualnim identitetom i atmosferom 80-ih.">
+          <span class="card-badge">Završeno</span>
+          <img class="poster" src="https://placehold.co/200x260/3a3a3a/aaaaaa?text=GHOST+MARK" alt="Ghost Mark"/>
+          <div class="card-info">
+            <div class="card-title">Ghost Mark</div>
+            <div class="card-duration">⏱ 2h 10min</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="drama" class="genre-section">
+      <h2 class="genre-title">🎭 Drama</h2>
+      <div class="films-grid">
+
+        <div class="film-card now" onclick="openModal(this)" data-title="The Last Letter" data-duration="1h 52min" data-genre="Drama / Romantika" data-year="2024" data-rating="8.1 / 10" data-status="now" data-badge="U kinu" data-desc="Penzionisani profesor pronalazi kutiju starih pisama u nasljedstvenoj kući. Svako pismo otkriva zaboravljenu ljubavnu priču iz pedesetih, isprepletenu s tajnama koje su promijenile sudbinu cijele porodice. Poetična drama o sjećanju, gubitku i pomirenju.">
+          <span class="card-badge">U kinu</span>
+          <img class="poster" src="https://placehold.co/200x260/2d1b2e/e8c4f0?text=THE+LAST+LETTER" alt="The Last Letter"/>
+          <div class="card-info">
+            <div class="card-title">The Last Letter</div>
+            <div class="card-duration">⏱ 1h 52min</div>
+          </div>
+        </div>
+
+        <div class="film-card now" onclick="openModal(this)" data-title="Broken Soil" data-duration="2h 01min" data-genre="Drama" data-year="2024" data-rating="7.6 / 10" data-status="now" data-badge="U kinu" data-desc="Farmer treće generacije suočava se s bankrotom i prijetnjom gubitka porodičnog imanja. Film prati jednu godinu kroz sve četiri sezone, prateći borbu čovjeka s prirodom, ekonomijom i vlastitim ponosom. Snažan portret ruralnog života.">
+          <span class="card-badge">U kinu</span>
+          <img class="poster" src="https://placehold.co/200x260/1e2d1e/b0e0b0?text=BROKEN+SOIL" alt="Broken Soil"/>
+          <div class="card-info">
+            <div class="card-title">Broken Soil</div>
+            <div class="card-duration">⏱ 2h 01min</div>
+          </div>
+        </div>
+
+        <div class="film-card soon" onclick="openModal(this)" data-title="Still Waters" data-duration="1h 44min" data-genre="Drama / Psihološki" data-year="2025" data-rating="Uskoro" data-status="soon" data-badge="Uskoro" data-desc="Psihoterapeutkinja počinje preispitivati vlastitu prošlost dok radi s novim pacijentom čija priča neodoljivo podsjeća na njenu. Intimna, napeta drama o granicama između empatije i projekcije, između liječenja i manipulacije.">
+          <span class="card-badge">Uskoro</span>
+          <img class="poster" src="https://placehold.co/200x260/1a2a3a/90c8e8?text=STILL+WATERS" alt="Still Waters"/>
+          <div class="card-info">
+            <div class="card-title">Still Waters</div>
+            <div class="card-duration">⏱ 1h 44min</div>
+          </div>
+        </div>
+
+        <div class="film-card ended" onclick="openModal(this)" data-title="After Rain" data-duration="1h 38min" data-genre="Drama" data-year="2023" data-rating="7.0 / 10" data-status="ended" data-badge="Završeno" data-desc="Dvije sestre se susreću na sahrani oca od kojeg su pobjegle godinama ranije. Petodnevni boravak u rodnoj kući prisiljava ih da se suoče s ranama iz djetinjstva. Tiha, emocionalno precizna drama o porodičnim dinamikama.">
+          <span class="card-badge">Završeno</span>
+          <img class="poster" src="https://placehold.co/200x260/2e2e2e/999999?text=AFTER+RAIN" alt="After Rain"/>
+          <div class="card-info">
+            <div class="card-title">After Rain</div>
+            <div class="card-duration">⏱ 1h 38min</div>
+          </div>
+        </div>
+
+        <div class="film-card ended" onclick="openModal(this)" data-title="Silent House" data-duration="1h 55min" data-genre="Drama / Horor" data-year="2023" data-rating="6.5 / 10" data-status="ended" data-badge="Završeno" data-desc="Mlada žena vraća se u porodičnu kuću da je pripremi za prodaju. Međutim, svaki kutak krije sjećanja i zvukove koji ne bi trebali biti tu. Atmosferski film na granici drame i horora, sniman u jednoj neprekinutoj sekvenci.">
+          <span class="card-badge">Završeno</span>
+          <img class="poster" src="https://placehold.co/200x260/333333/aaaaaa?text=SILENT+HOUSE" alt="Silent House"/>
+          <div class="card-info">
+            <div class="card-title">Silent House</div>
+            <div class="card-duration">⏱ 1h 55min</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="komedija" class="genre-section">
+      <h2 class="genre-title">😄 Komedija</h2>
+      <div class="films-grid">
+
+        <div class="film-card now" onclick="openModal(this)" data-title="Banana Republic" data-duration="1h 48min" data-genre="Komedija / Satira" data-year="2024" data-rating="7.4 / 10" data-status="now" data-badge="U kinu" data-desc="Neuspješni biznismen slučajno postaje predsjednički kandidat izmišljene tropske države. Politička satira s oštrim zubom, prepuna crnog humora i apsurdnih situacija. Film koji se ismijava birokratiji, korupciji i naivnom optimizmu.">
+          <span class="card-badge">U kinu</span>
+          <img class="poster" src="https://placehold.co/200x260/2e1a00/ffd080?text=BANANA+REPUBLIC" alt="Banana Republic"/>
+          <div class="card-info">
+            <div class="card-title">Banana Republic</div>
+            <div class="card-duration">⏱ 1h 48min</div>
+          </div>
+        </div>
+
+        <div class="film-card now" onclick="openModal(this)" data-title="Lost in Transit" data-duration="1h 36min" data-genre="Komedija / Romansa" data-year="2024" data-rating="7.1 / 10" data-status="now" data-badge="U kinu" data-desc="Dvojica stranaca zaglavi se u aerodromu zbog snježne oluje. Jedan je strog revizor, druga je impulsivna performans-artistkinja. 24 sata zajedničkog čekanja će preokrenuti obje perspektive. Lagana, topla komedija o suprotnostima koje se privlače.">
+          <span class="card-badge">U kinu</span>
+          <img class="poster" src="https://placehold.co/200x260/1e2e10/b0e888?text=LOST+IN+TRANSIT" alt="Lost in Transit"/>
+          <div class="card-info">
+            <div class="card-title">Lost in Transit</div>
+            <div class="card-duration">⏱ 1h 36min</div>
+          </div>
+        </div>
+
+        <div class="film-card soon" onclick="openModal(this)" data-title="Road Trip X" data-duration="1h 52min" data-genre="Komedija / Avantura" data-year="2025" data-rating="Uskoro" data-status="soon" data-badge="Uskoro" data-desc="Petero prijatelja koji se nikad nisu složili odlučuje provesti ljeto na road tripu od Lisabona do Istanbula. Svako ima drugi plan, svako skriva neku tajnu. Energičan, vizualno raskošan film koji slavi prijateljstvo i slobodu.">
+          <span class="card-badge">Uskoro</span>
+          <img class="poster" src="https://placehold.co/200x260/0a2a3a/80c8e8?text=ROAD+TRIP+X" alt="Road Trip X"/>
+          <div class="card-info">
+            <div class="card-title">Road Trip X</div>
+            <div class="card-duration">⏱ 1h 52min</div>
+          </div>
+        </div>
+
+        <div class="film-card ended" onclick="openModal(this)" data-title="Holiday Chaos" data-duration="1h 42min" data-genre="Komedija / Porodični" data-year="2023" data-rating="6.8 / 10" data-status="ended" data-badge="Završeno" data-desc="Porodično božićno okupljanje koje počinje idealnim planom završava u kaotičnoj, ali toploj avanturi. Svi su zaboravili nešto važno, svi imaju tajne, a kuća nema dovoljno soba. Klasična blagdanska komedija bez previše sentimentalnosti.">
+          <span class="card-badge">Završeno</span>
+          <img class="poster" src="https://placehold.co/200x260/383838/aaaaaa?text=HOLIDAY+CHAOS" alt="Holiday Chaos"/>
+          <div class="card-info">
+            <div class="card-title">Holiday Chaos</div>
+            <div class="card-duration">⏱ 1h 42min</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="animirani" class="genre-section">
+      <h2 class="genre-title">🎨 Animirani</h2>
+      <div class="films-grid">
+
+        <div class="film-card now" onclick="openModal(this)" data-title="Sky Wanderers" data-duration="1h 28min" data-genre="Animirani / Avantura" data-year="2024" data-rating="8.3 / 10" data-status="now" data-badge="U kinu" data-desc="Djevojčica i njen robotski pratilac putuju oblacima iznad post-apokaliptičnog svijeta u potrazi za preostalim ostrvima zelenila. Vizualno zadivljujući animirani film s porukama o ekologiji, odvažnosti i povjerenju. Pogodan za sve uzraste.">
+          <span class="card-badge">U kinu</span>
+          <img class="poster" src="https://placehold.co/200x260/0d1a2e/60b8ff?text=SKY+WANDERERS" alt="Sky Wanderers"/>
+          <div class="card-info">
+            <div class="card-title">Sky Wanderers</div>
+            <div class="card-duration">⏱ 1h 28min</div>
+          </div>
+        </div>
+
+        <div class="film-card now" onclick="openModal(this)" data-title="Forest Tales" data-duration="1h 35min" data-genre="Animirani / Fantazija" data-year="2024" data-rating="7.9 / 10" data-status="now" data-badge="U kinu" data-desc="Mladi lisac koji ne vjeruje u magiju pronalazi drevnu šumu u kojoj životinju koja govore čuvaju pradavnu tajnu. Bogat animirani film s jasnom narativnom strukturom i emotivnim srcem. Inspirisan europskim folklorom i mitologijom.">
+          <span class="card-badge">U kinu</span>
+          <img class="poster" src="https://placehold.co/200x260/1a0d2e/c880ff?text=FOREST+TALES" alt="Forest Tales"/>
+          <div class="card-info">
+            <div class="card-title">Forest Tales</div>
+            <div class="card-duration">⏱ 1h 35min</div>
+          </div>
+        </div>
+
+        <div class="film-card soon" onclick="openModal(this)" data-title="Deep Blue World" data-duration="1h 40min" data-genre="Animirani / Sci-Fi" data-year="2025" data-rating="Uskoro" data-status="soon" data-badge="Uskoro" data-desc="Podmorski grad budućnosti i njegova mlada istraživačica koja otkriva da ocean krije civilizaciju stariju od čovječanstva. Spektakularni animirani film s originalnim world-buildingom i emotivnom pričom o prihvatanju drugačijeg.">
+          <span class="card-badge">Uskoro</span>
+          <img class="poster" src="https://placehold.co/200x260/0a2030/80d0f0?text=DEEP+BLUE+WORLD" alt="Deep Blue World"/>
+          <div class="card-info">
+            <div class="card-title">Deep Blue World</div>
+            <div class="card-duration">⏱ 1h 40min</div>
+          </div>
+        </div>
+
+        <div class="film-card soon" onclick="openModal(this)" data-title="Little Giants" data-duration="1h 22min" data-genre="Animirani / Komedija" data-year="2025" data-rating="Uskoro" data-status="soon" data-badge="Uskoro" data-desc="Trojica insekta — mrav, buba i skakavac — nehotice završe u velikom gradu i moraju pronaći put kući. Šaljiv, dinamičan film s puno slapstick humora, idealan za porodični izlazak. Animacija u stilu klasičnih europskih crtića.">
+          <span class="card-badge">Uskoro</span>
+          <img class="poster" src="https://placehold.co/200x260/142030/a8d8e8?text=LITTLE+GIANTS" alt="Little Giants"/>
+          <div class="card-info">
+            <div class="card-title">Little Giants</div>
+            <div class="card-duration">⏱ 1h 22min</div>
+          </div>
+        </div>
+
+        <div class="film-card ended" onclick="openModal(this)" data-title="The Iron Cat" data-duration="1h 18min" data-genre="Animirani / Akcija" data-year="2023" data-rating="7.2 / 10" data-status="ended" data-badge="Završeno" data-desc="Mehanička mačka koja je jednom bila ratno oružje pronalazi mir u malom selu — sve dok prošlost ne stigne po nju. Kratki, snažan animirani film za odraslu publiku s jakim antiratnim porukama i minimalistički čistom animacijom.">
+          <span class="card-badge">Završeno</span>
+          <img class="poster" src="https://placehold.co/200x260/2c2c2c/aaaaaa?text=THE+IRON+CAT" alt="The Iron Cat"/>
+          <div class="card-info">
+            <div class="card-title">The Iron Cat</div>
+            <div class="card-duration">⏱ 1h 18min</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       RASPORED
+  ═══════════════════════════════════════ -->
+  <div id="page-raspored" class="page">
+    <h1 class="page-heading">Raspored</h1>
+
+    <div class="schedule-wrapper">
+
+      <div class="schedule-day">
+        <h2 class="schedule-day-title">Ponedjeljak</h2>
+        <div class="schedule-list">
+          <a class="schedule-item" href="sala.html?film=Thunder+Road&vrijeme=14%3A00&sala=Sala+1">
+            <div class="schedule-time">14:00</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Thunder Road</div>
+              <div class="schedule-meta">Akcija • Sala 1</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+          <a class="schedule-item" href="sala.html?film=The+Last+Letter&vrijeme=16%3A30&sala=Sala+2">
+            <div class="schedule-time">16:30</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">The Last Letter</div>
+              <div class="schedule-meta">Drama • Sala 2</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+          <a class="schedule-item" href="sala.html?film=Banana+Republic&vrijeme=19%3A00&sala=Sala+1">
+            <div class="schedule-time">19:00</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Banana Republic</div>
+              <div class="schedule-meta">Komedija • Sala 1</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="schedule-day">
+        <h2 class="schedule-day-title">Utorak</h2>
+        <div class="schedule-list">
+          <a class="schedule-item" href="sala.html?film=Sky+Wanderers&vrijeme=13%3A30&sala=Sala+3">
+            <div class="schedule-time">13:30</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Sky Wanderers</div>
+              <div class="schedule-meta">Animirani • Sala 3</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+          <a class="schedule-item" href="sala.html?film=Iron+Fury&vrijeme=17%3A00&sala=Sala+1">
+            <div class="schedule-time">17:00</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Iron Fury</div>
+              <div class="schedule-meta">Akcija • Sala 1</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+          <a class="schedule-item" href="sala.html?film=Still+Waters&vrijeme=20%3A00&sala=Sala+2">
+            <div class="schedule-time">20:00</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Still Waters</div>
+              <div class="schedule-meta">Drama • Sala 2</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="schedule-day">
+        <h2 class="schedule-day-title">Srijeda</h2>
+        <div class="schedule-list">
+          <a class="schedule-item" href="sala.html?film=Deep+Blue+World&vrijeme=15%3A00&sala=Sala+3">
+            <div class="schedule-time">15:00</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Deep Blue World</div>
+              <div class="schedule-meta">Animirani • Sala 3</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+          <a class="schedule-item" href="sala.html?film=Thunder+Road&vrijeme=18%3A00&sala=Sala+1">
+            <div class="schedule-time">18:00</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Thunder Road</div>
+              <div class="schedule-meta">Akcija • Sala 1</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+          <a class="schedule-item" href="sala.html?film=Banana+Republic&vrijeme=20%3A30&sala=Sala+2">
+            <div class="schedule-time">20:30</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Banana Republic</div>
+              <div class="schedule-meta">Komedija • Sala 2</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="schedule-day">
+        <h2 class="schedule-day-title">Četvrtak</h2>
+        <div class="schedule-list">
+          <a class="schedule-item" href="sala.html?film=The+Last+Letter&vrijeme=14%3A30&sala=Sala+2">
+            <div class="schedule-time">14:30</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">The Last Letter</div>
+              <div class="schedule-meta">Drama • Sala 2</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+          <a class="schedule-item" href="sala.html?film=Iron+Fury&vrijeme=17%3A30&sala=Sala+1">
+            <div class="schedule-time">17:30</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Iron Fury</div>
+              <div class="schedule-meta">Akcija • Sala 1</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+          <a class="schedule-item" href="sala.html?film=Sky+Wanderers&vrijeme=19%3A45&sala=Sala+3">
+            <div class="schedule-time">19:45</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Sky Wanderers</div>
+              <div class="schedule-meta">Animirani • Sala 3</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="schedule-day">
+        <h2 class="schedule-day-title">Petak</h2>
+        <div class="schedule-list">
+          <a class="schedule-item" href="sala.html?film=Deep+Blue+World&vrijeme=15%3A00&sala=Sala+3">
+            <div class="schedule-time">15:00</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Deep Blue World</div>
+              <div class="schedule-meta">Animirani • Sala 3</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+          <a class="schedule-item" href="sala.html?film=Thunder+Road&vrijeme=18%3A30&sala=Sala+1">
+            <div class="schedule-time">18:30</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Thunder Road</div>
+              <div class="schedule-meta">Akcija • Sala 1</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+          <a class="schedule-item" href="sala.html?film=The+Last+Letter&vrijeme=21%3A00&sala=Sala+2">
+            <div class="schedule-time">21:00</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">The Last Letter</div>
+              <div class="schedule-meta">Drama • Sala 2</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="schedule-day">
+        <h2 class="schedule-day-title">Subota</h2>
+        <div class="schedule-list">
+          <a class="schedule-item" href="sala.html?film=Sky+Wanderers&vrijeme=12%3A00&sala=Sala+3">
+            <div class="schedule-time">12:00</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Sky Wanderers</div>
+              <div class="schedule-meta">Animirani • Sala 3</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+          <a class="schedule-item" href="sala.html?film=Banana+Republic&vrijeme=15%3A30&sala=Sala+2">
+            <div class="schedule-time">15:30</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Banana Republic</div>
+              <div class="schedule-meta">Komedija • Sala 2</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+          <a class="schedule-item" href="sala.html?film=Iron+Fury&vrijeme=18%3A00&sala=Sala+1">
+            <div class="schedule-time">18:00</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Iron Fury</div>
+              <div class="schedule-meta">Akcija • Sala 1</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+          <a class="schedule-item" href="sala.html?film=Thunder+Road&vrijeme=21%3A00&sala=Sala+1">
+            <div class="schedule-time">21:00</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Thunder Road</div>
+              <div class="schedule-meta">Akcija • Sala 1</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="schedule-day">
+        <h2 class="schedule-day-title">Nedjelja</h2>
+        <div class="schedule-list">
+          <a class="schedule-item" href="sala.html?film=Deep+Blue+World&vrijeme=13%3A00&sala=Sala+3">
+            <div class="schedule-time">13:00</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Deep Blue World</div>
+              <div class="schedule-meta">Animirani • Sala 3</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+          <a class="schedule-item" href="sala.html?film=The+Last+Letter&vrijeme=16%3A00&sala=Sala+2">
+            <div class="schedule-time">16:00</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">The Last Letter</div>
+              <div class="schedule-meta">Drama • Sala 2</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+          <a class="schedule-item" href="sala.html?film=Iron+Fury&vrijeme=19%3A30&sala=Sala+1">
+            <div class="schedule-time">19:30</div>
+            <div class="schedule-details">
+              <div class="schedule-movie">Iron Fury</div>
+              <div class="schedule-meta">Akcija • Sala 1</div>
+            </div>
+            <div class="schedule-arrow">→</div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ── Handle return from sala.html ──
+    const savedPage = sessionStorage.getItem('cinePage');
+    if (savedPage) { sessionStorage.removeItem('cinePage'); showPage(savedPage); }
+
+    function showPage(name) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      const lb = document.getElementById('legend-filmovi');
+      lb.style.display = (name === 'filmovi') ? 'block' : 'none';
+      document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('active'));
+      const navEl = document.getElementById('nav-' + name);
+      if (navEl) navEl.classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    // ── Film Modal ──
+    function openModal(card) {
+      const d = card.dataset;
+      document.getElementById('modal-poster').src   = card.querySelector('.poster').src;
+      document.getElementById('modal-poster').alt   = d.title;
+      document.getElementById('modal-title').textContent    = d.title;
+      document.getElementById('modal-genre').textContent    = d.genre;
+      document.getElementById('modal-duration').textContent = d.duration;
+      document.getElementById('modal-year').textContent     = d.year;
+      document.getElementById('modal-rating').textContent   = d.rating;
+      document.getElementById('modal-desc').textContent     = d.desc;
+      const badge = document.getElementById('modal-badge');
+      badge.textContent  = d.badge;
+      badge.className    = 'modal-badge ' + d.status;
+      document.getElementById('film-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(event, force) {
+      if (force || (event && event.target === document.getElementById('film-modal'))) {
+        document.getElementById('film-modal').classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(null, true); });
+
+    // ── Featured films ──
+    const allFilms = [
+      { title:"Thunder Road",    duration:"2h 18min", img:"https://placehold.co/200x260/1a1a2e/e8b24a?text=THUNDER+ROAD",   status:"now" },
+      { title:"Iron Fury",       duration:"2h 05min", img:"https://placehold.co/200x260/16213e/e8b24a?text=IRON+FURY",      status:"now" },
+      { title:"Deep Blue World", duration:"1h 40min", img:"https://placehold.co/200x260/0a2030/80d0f0?text=DEEP+BLUE+WORLD",status:"soon" },
+      { title:"Steel Horizon",   duration:"2h 32min", img:"https://placehold.co/200x260/0f3460/b8dde8?text=STEEL+HORIZON",  status:"soon" },
+      { title:"Banana Republic", duration:"1h 48min", img:"https://placehold.co/200x260/2e1a00/ffd080?text=BANANA+REPUBLIC",status:"now" },
+      { title:"Sky Wanderers",   duration:"1h 28min", img:"https://placehold.co/200x260/0d1a2e/60b8ff?text=SKY+WANDERERS",  status:"now" }
+    ];
+
+    function loadFeaturedFilms() {
+      const container = document.getElementById('featured-grid');
+      const selected  = [...allFilms].sort(() => 0.5 - Math.random()).slice(0, 3);
+      container.innerHTML = '';
+      selected.forEach(film => {
+        const badge = film.status === "now" ? "U kinu" : "Uskoro";
+        const div = document.createElement('div');
+        div.className = `film-card ${film.status}`;
+        div.innerHTML = `
+          <span class="card-badge">${badge}</span>
+          <img class="poster" src="${film.img}" alt="${film.title}"/>
+          <div class="card-info">
+            <div class="card-title">${film.title}</div>
+            <div class="card-duration">⏱ ${film.duration}</div>
+          </div>`;
+        container.appendChild(div);
+      });
+    }
+
+    loadFeaturedFilms();
+  </script>
+
+</body>
+</html>
