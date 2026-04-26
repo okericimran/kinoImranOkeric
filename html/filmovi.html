@@ -517,80 +517,9 @@
     </div>
   </div>
 
-  <script>
-    // ── Handle return from sala.html ──
-    const savedPage = sessionStorage.getItem('cinePage');
-    if (savedPage) { sessionStorage.removeItem('cinePage'); showPage(savedPage); }
 
-    function showPage(name) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('page-' + name).classList.add('active');
-      const lb = document.getElementById('legend-filmovi');
-      lb.style.display = (name === 'filmovi') ? 'block' : 'none';
-      document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('active'));
-      const navEl = document.getElementById('nav-' + name);
-      if (navEl) navEl.classList.add('active');
-      window.scrollTo(0, 0);
-    }
-
-    // ── Film Modal ──
-    function openModal(card) {
-      const d = card.dataset;
-      document.getElementById('modal-poster').src   = card.querySelector('.poster').src;
-      document.getElementById('modal-poster').alt   = d.title;
-      document.getElementById('modal-title').textContent    = d.title;
-      document.getElementById('modal-genre').textContent    = d.genre;
-      document.getElementById('modal-duration').textContent = d.duration;
-      document.getElementById('modal-year').textContent     = d.year;
-      document.getElementById('modal-rating').textContent   = d.rating;
-      document.getElementById('modal-desc').textContent     = d.desc;
-      const badge = document.getElementById('modal-badge');
-      badge.textContent  = d.badge;
-      badge.className    = 'modal-badge ' + d.status;
-      document.getElementById('film-modal').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal(event, force) {
-      if (force || (event && event.target === document.getElementById('film-modal'))) {
-        document.getElementById('film-modal').classList.remove('open');
-        document.body.style.overflow = '';
-      }
-    }
-
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(null, true); });
-
-    // ── Featured films ──
-    const allFilms = [
-      { title:"Thunder Road",    duration:"2h 18min", img:"https://placehold.co/200x260/1a1a2e/e8b24a?text=THUNDER+ROAD",   status:"now" },
-      { title:"Iron Fury",       duration:"2h 05min", img:"https://placehold.co/200x260/16213e/e8b24a?text=IRON+FURY",      status:"now" },
-      { title:"Deep Blue World", duration:"1h 40min", img:"https://placehold.co/200x260/0a2030/80d0f0?text=DEEP+BLUE+WORLD",status:"soon" },
-      { title:"Steel Horizon",   duration:"2h 32min", img:"https://placehold.co/200x260/0f3460/b8dde8?text=STEEL+HORIZON",  status:"soon" },
-      { title:"Banana Republic", duration:"1h 48min", img:"https://placehold.co/200x260/2e1a00/ffd080?text=BANANA+REPUBLIC",status:"now" },
-      { title:"Sky Wanderers",   duration:"1h 28min", img:"https://placehold.co/200x260/0d1a2e/60b8ff?text=SKY+WANDERERS",  status:"now" }
-    ];
-
-    function loadFeaturedFilms() {
-      const container = document.getElementById('featured-grid');
-      const selected  = [...allFilms].sort(() => 0.5 - Math.random()).slice(0, 3);
-      container.innerHTML = '';
-      selected.forEach(film => {
-        const badge = film.status === "now" ? "U kinu" : "Uskoro";
-        const div = document.createElement('div');
-        div.className = `film-card ${film.status}`;
-        div.innerHTML = `
-          <span class="card-badge">${badge}</span>
-          <img class="poster" src="${film.img}" alt="${film.title}"/>
-          <div class="card-info">
-            <div class="card-title">${film.title}</div>
-            <div class="card-duration">⏱ ${film.duration}</div>
-          </div>`;
-        container.appendChild(div);
-      });
-    }
-
-    loadFeaturedFilms();
-  </script>
+  <script src="../scripts/kinoSala.js"></script>
+  <script src="../scripts/app.js"></script>
 
 </body>
 </html>
